@@ -63,5 +63,38 @@ namespace AddressBookDataBase
 
             finally { connection.Close(); }
         }
+        public void AddressBookDBUpdate(Contact contact)
+        {
+            try
+            {
+                using (this.connection)
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand("spUpdateData", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@FirstName", contact.First_Name);
+                    command.Parameters.AddWithValue("@Address", contact.Address);
+                    command.Parameters.AddWithValue("@PhoneNumber", contact.Phone_Number);
+
+                    int result = command.ExecuteNonQuery();
+                    connection.Close();
+                    if (result >= 1)
+                    {
+                        Console.WriteLine("AddressBook Data Updated Successfully");
+                    }
+                    else
+                        Console.WriteLine("No DataBase found");
+                    
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            finally { connection.Close(); }
+        }
     }
 }
